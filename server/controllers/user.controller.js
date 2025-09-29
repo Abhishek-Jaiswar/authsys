@@ -88,10 +88,7 @@ export const login = async (req, res) => {
                 error: error
             })
         }
-
-        const sanitizedEmail = email.trim().lowerCase()
-
-        const user = await User.findOne({ email: sanitizedEmail });
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({
                 message: "User with this email not found.",
@@ -103,14 +100,6 @@ export const login = async (req, res) => {
         if (!isPasswordMatched) {
             return res.status(401).json({
                 message: "Invalid password",
-                success: false
-            })
-        }
-
-        if (!JWT_SECRET) {
-            console.error("JWT secret is not defined");
-            return res.status(500).json({
-                message: "Server configuration error",
                 success: false
             })
         }
@@ -135,13 +124,14 @@ export const login = async (req, res) => {
             message: "Successfully logged in",
             message: true,
             user: {
+                username: user.fullname,
                 id: user._id,
                 email: user.email
             }
         })
 
     } catch (error) {
-        console.error("Failed to login");
+        console.error("Failed to login", error);
         return res.status(500).json({
             message: "Internal server error",
             success: false
