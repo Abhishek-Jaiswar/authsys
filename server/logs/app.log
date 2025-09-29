@@ -89,3 +89,6 @@
 2025-09-29T08:47:52.442Z [[32minfo[39m]: Database conneted successfully to: ac-1kycexe-shard-00-00.flauyph.mongodb.net
 2025-09-29T08:47:52.444Z [[32minfo[39m]: MongoDB connected successfully
 2025-09-29T08:47:52.446Z [[32minfo[39m]: Server is listening on port: http://localhost:3000
+2025-09-29T15:56:18.465Z [[32minfo[39m]: Database conneted successfully to: ac-1kycexe-shard-00-01.flauyph.mongodb.net
+2025-09-29T15:56:18.477Z [[32minfo[39m]: MongoDB connected successfully
+2025-09-29T15:56:18.479Z [[32minfo[39m]: Server is listening on port: http://localhost:3000
