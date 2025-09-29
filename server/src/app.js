@@ -2,12 +2,14 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import userRoutes from '../routes/user.route.js'
+import { config } from 'dotenv'
+config()
 
 const server = express()
 
 // middlewares
 server.use(cors({
-    origin: process.env.CLIENT_URI || 'http://localhost:5173',
+    origin: process.env.CLIENT_URI,
     credentials: true
 }))
 
