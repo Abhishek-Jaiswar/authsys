@@ -9,7 +9,7 @@ const server = express()
 
 // middlewares
 server.use(cors({
-    origin: process.env.CLIENT_URI || 'https://authsys-eight.vercel.app',
+    origin: 'https://authsys-eight.vercel.app',
     credentials: true
 }))
 
