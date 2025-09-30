@@ -21,7 +21,7 @@ export const authMiddleware = async (req, res, next) => {
         req.user = decode
         next()
     } catch (error) {
-        console.error("Internal server error");
+        console.error("Internal server error", error);
         return res.status(500).json({
             message: 'Internal server error',
             success: false

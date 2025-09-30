@@ -18,7 +18,7 @@ const Home = () => {
             if (response.status === 200) {
                 navigate('/login')
                 localStorage.setItem("user", null);
-                toast.success(response?.data?.message)
+                toast.success(response?.data?.message || "Logged out successfully")
             }
         } catch (error) {
             console.log(error);
