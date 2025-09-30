@@ -114,8 +114,8 @@ export const login = async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+            secure: process.env.NODE_ENV !== "development",
             maxAge: 7 * 24 * 60 * 60 * 1000
 
         })
@@ -140,30 +140,30 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-  try {
-    if (!req.cookies?.token) {
-      return res.status(200).json({
-        message: "No active session found",
-        success: false,
-      });
+    try {
+        if (!req.cookies?.token) {
+            return res.status(200).json({
+                message: "No active session found",
+                success: false,
+            });
+        }
+
+        res.clearCookie("token", {
+            httpOnly: true,
+            sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+            secure: process.env.NODE_ENV !== "development",
+            path: "/",
+        });
+
+        return res.status(200).json({
+            message: "Logged out successfully",
+            success: true,
+        });
+    } catch (error) {
+        console.error("Failed to logout: ", error);
+        return res.status(500).json({
+            message: "Internal server error",
+            success: false,
+        });
     }
-
-    res.clearCookie("token", {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV !== "development",
-      path: "/",
-    });
-
-    return res.status(200).json({
-      message: "Logged out successfully",
-      success: true,
-    });
-  } catch (error) {
-    console.error("Failed to logout: ", error);
-    return res.status(500).json({
-      message: "Internal server error",
-      success: false,
-    });
-  }
 };
