@@ -7,7 +7,7 @@ import { IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5';
 import { api } from '../api/api';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader, Loader2 } from 'lucide-react';
 
 const validationRules = {
     fullname: {
@@ -31,6 +31,7 @@ const Login = () => {
     const [isEye, setIsEye] = useState(false);
     const [errors, setErrors] = useState({ fullname: '', email: '', password: '' });
     const [isLoading, setIsLoading] = useState(false);
+    const [googlePending, setGooglePending] = useState(false)
 
     const navigate = useNavigate();
 
@@ -91,6 +92,11 @@ const Login = () => {
         }
     };
 
+    const SignInWithGoogle = () => {
+        setGooglePending(true)
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/google`;
+    }
+
     return (
         <div className="min-h-screen flex justify-center items-center bg-gray-100">
             <div className="max-w-md w-full border border-neutral-200 rounded-md bg-white p-6">
@@ -105,16 +111,19 @@ const Login = () => {
                         <button
                             type="button"
                             className="border border-neutral-200 flex items-center justify-center gap-2 py-2 hover:bg-neutral-100 transition-colors duration-200"
-                            onClick={() => toast((t) => (
-                                <span>
-                                    <button onClick={() => toast.dismiss(t.id)}>
-                                        Google login coming soon
-                                    </button>
-                                </span>
-                            ))}
+                            onClick={SignInWithGoogle}
                         >
-                            <FcGoogle className="text-2xl" />
-                            <span className="text-neutral-800 font-bold">Google</span>
+                            {googlePending ? (
+                                <>
+                                    <Loader className=' size-4 animate-spin ml-2' />
+                                    <span>Redirecting...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <FcGoogle className="text-2xl" />
+                                    <span className="text-neutral-800 font-bold">Google</span>
+                                </>
+                            )}
                         </button>
                         <button
                             type="button"

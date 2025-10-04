@@ -1,6 +1,7 @@
 import server from "./app.js";
 import connectDb from "../config/db.js";
 import { config } from 'dotenv'
+
 config(
     { path: "./env" }
 )

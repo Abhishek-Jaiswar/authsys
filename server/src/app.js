@@ -4,6 +4,9 @@ import cors from 'cors'
 import userRoutes from '../routes/user.route.js'
 import userOauthRoutes from '../routes/user.oauth.route.js'
 import { config } from 'dotenv'
+import passport from 'passport'
+import { googleOauth } from '../services/auth/googleOauth.js'
+
 config()
 
 const server = express()
@@ -18,12 +21,15 @@ server.use(express.json())
 
 server.use(cookieParser())
 
+googleOauth(passport);
+server.use(passport.initialize());
+
 // Endpoints
 
 server.use('/api/v1/user', userRoutes)
 server.use('/', userOauthRoutes)
 
-server.get('/', (req, res) => {
+server.get('/auth', (req, res) => {
     return res.json({
         message: "Welcome to the authysys, it is working fine till now!"
     })

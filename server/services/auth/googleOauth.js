@@ -7,9 +7,9 @@ export const googleOauth = (passport) => {
     passport.use(new Strategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`
+        callbackURL: "http://localhost:3000/auth/google/callback"
     },
-        async (accessToken, refreshToken, profile, done) => {
+        async (profile, done) => {
             try {
                 let user = await User.findOne({
                     $or: [{ googleId: profile.id }, { email: profile.emails[0].value }]
