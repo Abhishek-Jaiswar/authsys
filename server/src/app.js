@@ -2,6 +2,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import userRoutes from '../routes/user.route.js'
+import userOauthRoutes from '../routes/user.oauth.route.js'
 import { config } from 'dotenv'
 config()
 
@@ -9,7 +10,7 @@ const server = express()
 
 // middlewares
 server.use(cors({
-    origin: 'https://authsys-eight.vercel.app',
+    origin: 'http://localhost:5173',
     credentials: true
 }))
 
@@ -20,6 +21,7 @@ server.use(cookieParser())
 // Endpoints
 
 server.use('/api/v1/user', userRoutes)
+server.use('/', userOauthRoutes)
 
 server.get('/', (req, res) => {
     return res.json({
