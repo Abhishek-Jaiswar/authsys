@@ -3,7 +3,7 @@ import connectDb from "../config/db.js";
 import { config } from 'dotenv'
 
 config(
-    { path: "./env" }
+    { path: "./.env" }
 )
 
 const PORT = process.env.PORT || 8000

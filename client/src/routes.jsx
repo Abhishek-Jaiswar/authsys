@@ -3,6 +3,7 @@ import App from "./App";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import AuthCallback from "./components/AuthCallback";
 
 export const routes = [
     {
@@ -22,5 +23,9 @@ export const routes = [
     {
         path: '/sign-up',
         element: <SignUp />
+    },
+    {
+        path: '/auth/callback',
+        element: <AuthCallback />
     }
 ]

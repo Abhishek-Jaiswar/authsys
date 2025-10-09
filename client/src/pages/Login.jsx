@@ -8,6 +8,7 @@ import { api } from '../api/api';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Loader, Loader2 } from 'lucide-react';
+import { useAuth } from '../hooks';
 
 const validationRules = {
     fullname: {
@@ -32,8 +33,13 @@ const Login = () => {
     const [errors, setErrors] = useState({ fullname: '', email: '', password: '' });
     const [isLoading, setIsLoading] = useState(false);
     const [googlePending, setGooglePending] = useState(false)
-
+    
+    const { login, user } = useAuth();
     const navigate = useNavigate();
+
+    if (user) {
+        return navigate("/")
+    }
 
     const handleEye = () => {
         setIsEye((prev) => !prev);
@@ -72,7 +78,7 @@ const Login = () => {
 
             const response = await api.post('/api/v1/user/login', { email, password });
             if (response.status === 200) {
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+                login(response.data.user);
                 navigate('/');
                 toast.success(response?.data?.message || 'Logged in successfully!');
             }
@@ -94,7 +100,7 @@ const Login = () => {
 
     const SignInWithGoogle = () => {
         setGooglePending(true)
-        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/google`;
+        window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
     }
 
     return (

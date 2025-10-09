@@ -9,7 +9,7 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/logout', authMiddleware, logout)
 
-router.get('/user', authMiddleware, async (req, res) => {
+router.get('/me', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.id).select('-password -__v');
         if (!user) return res.status(404).json({ error: 'User not found' });
