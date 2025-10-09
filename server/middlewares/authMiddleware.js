@@ -19,6 +19,7 @@ export const authMiddleware = async (req, res, next) => {
         }
         
         req.user = decode
+        req.id = decode.id
         next()
     } catch (error) {
         console.error("Internal server error", error);

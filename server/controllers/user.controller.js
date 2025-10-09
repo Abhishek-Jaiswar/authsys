@@ -117,14 +117,13 @@ export const login = async (req, res) => {
             sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
             secure: process.env.NODE_ENV === 'production' ? true : false,
             maxAge: 7 * 24 * 60 * 60 * 1000
-
         })
 
         return res.status(200).json({
             message: "Successfully logged in",
-            message: true,
+            success: true,
             user: {
-                username: user.fullname,
+                fullname: user.fullname,
                 id: user._id,
                 email: user.email
             }

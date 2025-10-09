@@ -13,8 +13,19 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        minLength: 8
+        required: function () {
+            return !this.googleId; // Password required only if googleId is not set
+        },
+        minLength: 8,
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    profilePicture: {
+        type: String,
+        default: null
     }
 }, { timestamps: true })
 

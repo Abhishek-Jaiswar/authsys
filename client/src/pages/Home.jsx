@@ -3,27 +3,34 @@ import { Link } from 'react-router-dom'
 import { api } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAuth } from '../hooks';
 
 const Home = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const authenticated = user?.id
-
+    const { user, isAuthenticated, logout, loading } = useAuth();
     const navigate = useNavigate()
 
-    console.log(user);
+    // Remove the console.log to prevent spam
 
     const handleLogout = async () => {
         try {
-            const response = await api.post('/api/v1/user/logout')
-            if (response.status === 200) {
-                navigate('/login')
-                localStorage.setItem("user", null);
-                toast.success(response?.data?.message || "Logged out successfully")
-            }
+            await logout();
+            navigate('/login');
+            toast.success("Logged out successfully");
         } catch (error) {
             console.log(error);
-            toast.error(error.response?.data.message || "Failed to logout, refresh and try again")
+            toast.error("Failed to logout, refresh and try again");
         }
+    }
+
+    if (loading) {
+        return (
+            <div className='h-screen w-screen flex items-center justify-center'>
+                <div className='text-center'>
+                    <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-900 mx-auto'></div>
+                    <p className='mt-2 text-neutral-600'>Loading...</p>
+                </div>
+            </div>
+        );
     }
 
 
@@ -33,9 +40,13 @@ const Home = () => {
                 <h1 className='text-4xl text-neutral-900 font-bold'>Welcome to Authsys</h1>
                 <p className='text-sm text-neutral-700 font-semibold'>Full stack authentication system with best practises</p>
 
-                {authenticated ? (
+                {isAuthenticated ? (
                     <div className='space-y-5'>
-                        <h1 className='text-2xl font-bold text-neutral-500'>Mr. {user?.username || "Unknown"}</h1>
+                        <h1 className='text-2xl font-bold text-neutral-500'>Welcome, {user?.fullname || "User"}</h1>
+                        <p className='text-sm text-neutral-600'>Email: {user?.email}</p>
+                        {user?.googleId && (
+                            <p className='text-xs text-blue-600'>Signed in with Google</p>
+                        )}
                         <button
                             className='px-4 py-1.5 bg-neutral-800 text-white text-sm rounded-md hover:bg-neutral-700 transition-colors duration-200 cursor-pointer'
                             onClick={handleLogout}
